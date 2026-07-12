@@ -1,0 +1,124 @@
+<!DOCTYPE html><html><head>
+<!---
+   _____ _         _           
+  |     |_|___ ___| |_ ___ _ _ 
+  | | | | |_ -|_ -| '_| -_| | |
+  |_|_|_|_|___|___|_,_|___|_  |
+                          |___|
+  Thank you for using Misskey!
+  If you are reading this message... how about joining the development?
+  https://github.com/misskey-dev/misskey
+
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/_nuxt/entry.Fku5C8X3.css" crossorigin>
+<link rel="modulepreload" as="script" crossorigin href="/_nuxt/BAb2Lluo.js">
+<meta name="theme-color" content="#9ad11b">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
+<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
+<link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
+<link rel="me" href="https://misskey.io/@misskey_hub_deploy">
+<link rel="me" href="https://mastodon.social/@misskey">
+<script type="module" src="/_nuxt/BAb2Lluo.js" crossorigin></script><script>"use strict";(()=>{const t=window,e=document.documentElement,c=["dark","light"],n=getStorageValue("localStorage","nuxt-color-mode")||"system";let i=n==="system"?u():n;const r=e.getAttribute("data-color-mode-forced");r&&(i=r),l(i),t["__NUXT_COLOR_MODE__"]={preference:n,value:i,getColorScheme:u,addColorScheme:l,removeColorScheme:d};function l(o){const s=""+o+"",a="";e.classList?e.classList.add(s):e.className+=" "+s,a&&e.setAttribute("data-"+a,o)}function d(o){const s=""+o+"",a="";e.classList?e.classList.remove(s):e.className=e.className.replace(new RegExp(s,"g"),""),a&&e.removeAttribute("data-"+a)}function f(o){return t.matchMedia("(prefers-color-scheme"+o+")")}function u(){if(t.matchMedia&&f("").media!=="not all"){for(const o of c)if(f(":"+o).matches)return o}return"light"}})();function getStorageValue(t,e){switch(t){case"localStorage":return window.localStorage.getItem(e);case"sessionStorage":return window.sessionStorage.getItem(e);case"cookie":return getCookie(e);default:return null}}function getCookie(t){const c=("; "+window.document.cookie).split("; "+t+"=");if(c.length===2)return c.pop()?.split(";").shift()}</script></head><body><div id="__nuxt"><script type="text/javascript">
+    const s = ["ja","en","id","ko","it","pl","fr","th","es","de","cn","tw","ja-ks"];
+    const r = new RegExp(`^/\(${s.join('|')}\)`);
+    const d = new URLSearchParams(document.cookie);
+    if (!r.test(location.pathname)) {
+        if (d.get('i18n_redirected')) {
+            location.replace('/' + d.get('i18n_redirected') + location.pathname + location.search);
+        } else if (s.includes(navigator.language.split("-")[0])) {
+            location.replace('/' + navigator.language.split("-")[0] + location.pathname + location.search);
+        } else {
+            location.replace('/ja' + location.pathname + location.search);
+        }
+    }
+</script>
+
+<div id="splash">
+    <img id="splashIcon" src="/img/icons/icon-128x128.png">
+    <div id="splashSpinner"><svg class="spinner bg" viewBox="0 0 152 152" xmlns="http://www.w3.org/2000/svg">
+            <g transform="matrix(1,0,0,1,12,12)">
+                <circle cx="64" cy="64" r="64" style="fill:none;stroke:currentColor;stroke-width:24px;" />
+            </g>
+        </svg>
+        <svg class="spinner fg" viewBox="0 0 152 152" xmlns="http://www.w3.org/2000/svg">
+            <g transform="matrix(1,0,0,1,12,12)">
+                <path d="M128,64C128,28.654 99.346,0 64,0C99.346,0 128,28.654 128,64Z" style="fill:none;stroke:currentColor;stroke-width:24px;" />
+            </g>
+        </svg>
+    </div>
+</div>
+
+<style>
+    #splash {
+        background-color: #f9f9f9;
+        cursor: wait;
+        height: 100vh;
+        left: 0;
+        opacity: 1;
+        position: fixed;
+        top: 0;
+        transition: opacity .5s ease;
+        width: 100vw;
+        z-index: 10000
+    }
+
+    #splashIcon {
+        height: 64px;
+        pointer-events: none;
+        width: 64px
+    }
+
+    #splashIcon,
+    #splashSpinner {
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        position: absolute;
+        right: 0;
+        top: 0
+    }
+
+    #splashSpinner {
+        color: #86b300;
+        display: inline-block;
+        height: 28px;
+        transform: translateY(70px);
+        width: 28px
+    }
+
+    #splashSpinner>.spinner {
+        height: 28px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 28px;
+        fill-rule: evenodd;
+        clip-rule: evenodd;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 1.5
+    }
+
+    #splashSpinner>.spinner.bg {
+        opacity: .275
+    }
+
+    #splashSpinner>.spinner.fg {
+        animation: splashSpinner .5s linear infinite
+    }
+
+    @keyframes splashSpinner {
+        0% {
+            transform: rotate(0deg)
+        }
+
+        to {
+            transform: rotate(1turn)
+        }
+    }
+</style></div><div id="teleports"></div><script type="application/json" data-nuxt-data="nuxt-app" data-ssr="false" id="__NUXT_DATA__">[{"prerenderedAt":1,"serverRendered":2},1782546253621,false]</script>
+<script>window.__NUXT__={};window.__NUXT__.config={public:{baseUrl:"https://misskey-hub.net",serverListApiBaseUrl:"https://servers-list-api.misskey-hub.net",repositoryUrl:"https://github.com/misskey-dev/misskey-hub-next",locales:[{files:["ja-JP.json"],code:"ja",language:"ja-JP",name:"日本語"},{files:["en-US.json"],code:"en",language:"en-US",name:"English"},{files:["id-ID.json"],code:"id",language:"id-ID",name:"Bahasa Indonesia"},{files:["ko-KR.json"],code:"ko",language:"ko-KR",name:"한국어"},{files:["it-IT.json"],code:"it",language:"it-IT",name:"Italiano"},{files:["pl-PL.json"],code:"pl",language:"pl-PL",name:"Polski"},{files:["fr-FR.json"],code:"fr",language:"fr-FR",name:"Français"},{files:["th-TH.json"],code:"th",language:"th-TH",name:"ภาษาไทย"},{files:["es-ES.json"],code:"es",language:"es-ES",name:"Español"},{files:["de-DE.json"],code:"de",language:"de-DE",name:"Deutsch"},{files:["zh-CN.json"],code:"cn",language:"zh-CN",name:"简体中文"},{files:["zh-TW.json"],code:"tw",language:"zh-TW",name:"繁体中文"},{files:["ja-KS.json"],code:"ja-ks",language:"ja-KS",name:"🐙"}],misskeyJsVersion:"2025.12.2",mdc:{components:{prose:true,map:{p:"prose-p",a:"prose-a",blockquote:"prose-blockquote","code-inline":"prose-code-inline",code:"ProseCodeInline",em:"prose-em",h1:"prose-h1",h2:"prose-h2",h3:"prose-h3",h4:"prose-h4",h5:"prose-h5",h6:"prose-h6",hr:"prose-hr",img:"prose-img",ul:"prose-ul",ol:"prose-ol",li:"prose-li",strong:"prose-strong",table:"prose-table",thead:"prose-thead",tbody:"prose-tbody",td:"prose-td",th:"prose-th",tr:"prose-tr"}},headings:{anchorLinks:{h1:false,h2:true,h3:true,h4:true,h5:false,h6:false}}},content:{locales:[],defaultLocale:"",integrity:1782546152491,experimental:{stripQueryParameters:false,advanceQuery:false,clientDB:false},respectPathCase:false,api:{baseURL:"/api/_content"},navigation:{fields:["date","description"]},tags:{p:"prose-p",a:"prose-a",blockquote:"prose-blockquote","code-inline":"prose-code-inline",code:"ProseCodeInline",em:"prose-em",h1:"prose-h1",h2:"prose-h2",h3:"prose-h3",h4:"prose-h4",h5:"prose-h5",h6:"prose-h6",hr:"prose-hr",img:"prose-img",ul:"prose-ul",ol:"prose-ol",li:"prose-li",strong:"prose-strong",table:"prose-table",thead:"prose-thead",tbody:"prose-tbody",td:"prose-td",th:"prose-th",tr:"prose-tr"},highlight:{theme:{default:"catppuccin-latte",dark:"one-dark-pro"},langs:["json","js","ts","html","css","vue","shell","mdc","md","yaml","jsx","ini","sql","yml","nginx","bash"],highlighter:"shiki",shikiEngine:"oniguruma"},wsUrl:"",documentDriven:false,host:"",trailingSlash:false,search:"",contentHead:true,anchorLinks:{depth:4,exclude:[1]}},i18n:{baseUrl:"https://misskey-hub.net",defaultLocale:"ja",rootRedirect:"",redirectStatusCode:302,skipSettingLocaleOnNavigate:false,locales:[{code:"ja",language:"ja-JP",name:"日本語"},{code:"en",language:"en-US",name:"English"},{code:"id",language:"id-ID",name:"Bahasa Indonesia"},{code:"ko",language:"ko-KR",name:"한국어"},{code:"it",language:"it-IT",name:"Italiano"},{code:"pl",language:"pl-PL",name:"Polski"},{code:"fr",language:"fr-FR",name:"Français"},{code:"th",language:"th-TH",name:"ภาษาไทย"},{code:"es",language:"es-ES",name:"Español"},{code:"de",language:"de-DE",name:"Deutsch"},{code:"cn",language:"zh-CN",name:"简体中文"},{code:"tw",language:"zh-TW",name:"繁体中文"},{code:"ja-ks",language:"ja-KS",name:"🐙"}],detectBrowserLanguage:{alwaysRedirect:false,cookieCrossOrigin:false,cookieDomain:"",cookieKey:"i18n_redirected",cookieSecure:false,fallbackLocale:"",redirectOn:"root",useCookie:true},experimental:{localeDetector:"",typedPages:true,typedOptionsAndMessages:false,alternateLinkCanonicalQueries:true,devCache:false,cacheLifetime:"",stripMessagesPayload:false,preload:false,strictSeo:false,nitroContextDetection:true,httpCacheDuration:10},domainLocales:{ja:{domain:""},en:{domain:""},id:{domain:""},ko:{domain:""},it:{domain:""},pl:{domain:""},fr:{domain:""},th:{domain:""},es:{domain:""},de:{domain:""},cn:{domain:""},tw:{domain:""},"ja-ks":{domain:""}}}},app:{baseURL:"/",buildId:"4127ffca-f59a-4728-9579-a1025588faad",buildAssetsDir:"/_nuxt/",cdnURL:""}}</script></body></html>
