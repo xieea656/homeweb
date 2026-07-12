@@ -3,5 +3,10 @@
     "icon": "Blog",
     "name": "博客",
     "link": "https://blog.xieea.eu.cc/"
+  },
+  {
+    "icon": "Misskey",
+    "name": "拂晓",
+    "link": "https://social.xieea.eu.cc/"
   }
 ]
