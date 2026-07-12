@@ -2,31 +2,25 @@
   {
     "name": "Github",
     "icon": "/images/icon/github.png",
-    "tip": "å» Github çœ‹çœ‹",
+    "tip": "È¥ Github ¿´¿´",
     "url": "https://github.com/xieea656"
-  },
-  {
-    "name": "Misskey",
-    "icon": "/images/icon/misskey.png",
-    "tip": "æ¥æ‹‚æ™“æ‰¾æˆ‘ç©",
-    "url": "https://social.xieea.eu.cc/@xiaoli"
   },
   {
     "name": "BiliBili",
     "icon": "/images/icon/bilibili.png",
-    "tip": "(ã‚œ-ã‚œ)ã¤ãƒ­ å¹²æ¯ ~",
+    "tip": "(©b-©b)¤Ä¥í ¸É±­ ~",
     "url": "https://space.bilibili.com/3546596633479464"
   },
   {
     "name": "QQ",
     "icon": "/images/icon/qq.png",
-    "tip": "æœ‰ä»€ä¹ˆäº‹å—",
+    "tip": "ÓĞÊ²Ã´ÊÂÂğ",
     "url": "https://res.abeim.cn/api/qq/?qq=3697532287"
   },
   {
     "name": "Email",
     "icon": "/images/icon/email.png",
-    "tip": "æ¥å° Email ~",
+    "tip": "À´·â Email ~",
     "url": "mailto:xiaoli-xieea@outlook.com"
   }
 ]
