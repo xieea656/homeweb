@@ -1,157 +1,191 @@
 /* ============================================================
-   Global Styles — Tailwind CSS v4 + 自定义动画 + 暗色模式
-   参考：astro-nano (minimal CSS), Dopefolio (bold animations)
+   HomeWeb — 杂志排版 · 电子墨水美学
+   参考：guizang-ppt (color system, typography, WebGL)
    ============================================================ */
 
 @import "tailwindcss";
 
-/* ---- 暗色模式变量 ---- */
-@custom-variant dark (&:where(.dark, .dark *));
-
-/* ---- 主题色 ---- */
+/* ---- 主题色 (墨水经典) ----
+   guizang-ppt 风格：ink/paper 命名，不是 text/bg */
 @theme {
-  --color-accent: #4f46e5;
-  --color-accent-light: #6366f1;
-  --color-accent-dark: #4338ca;
-  --color-surface: #f8fafc;
-  --color-surface-dark: #0f172a;
+  --color-ink: #0a0a0b;
+  --color-paper: #f1efea;
+  --color-paper-tint: #e8e5de;
+  --color-ink-tint: #18181a;
+  --color-muted: #6b6b6b;
 }
 
-/* ---- 基础样式 ---- */
+/* ---- 暗色模式 ---- */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---- 基础 ---- */
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Noto Sans SC", "Inter", system-ui, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  transition: background 0.8s ease, color 0.8s ease;
 }
 
-/* 选中颜色 */
+.dark body,
+body.dark {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
 ::selection {
-  background-color: rgba(79, 70, 229, 0.2);
+  background: rgba(10, 10, 11, 0.12);
   color: inherit;
 }
 
-/* ---- 滚动入场动画 (参考 simplefolio reveal + astro-nano minimal) ---- */
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ---- 字体规则 (guizang-ppt 体系) ----
+   衬线 = 标题 · 金句 · 数字
+   非衬线 = 正文 · 描述
+   等宽 = kicker · meta · 标签 */
+.serif   { font-family: "Noto Serif SC", "Playfair Display", Georgia, serif; }
+.sans    { font-family: "Noto Sans SC", "Inter", system-ui, sans-serif; }
+.mono    { font-family: "IBM Plex Mono", "Consolas", monospace; }
+
+/* ---- Kicker (等宽小标签) ---- */
+.kicker {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0.55;
 }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* ---- 大标题 (衬线) ---- */
+.display-zh {
+  font-family: "Noto Serif SC", "Playfair Display", serif;
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.005em;
 }
 
-/* 默认隐藏，js 添加 class 后动画入场 */
-.animate-on-scroll {
+.h1-serif {
+  font-family: "Noto Serif SC", "Playfair Display", serif;
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -0.005em;
+}
+
+.h2-serif {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 600;
+  line-height: 1.22;
+}
+
+/* ---- Body (非衬线) ---- */
+.body-zh {
+  font-family: "Noto Sans SC", sans-serif;
+  line-height: 1.78;
+  opacity: 0.78;
+}
+
+.lead {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 400;
+  line-height: 1.45;
+  opacity: 0.82;
+}
+
+/* ---- 分隔线 ---- */
+.rule {
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.18;
+}
+
+/* ---- 标签 Tag ---- */
+.tag {
+  display: inline-block;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 1px solid currentColor;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.tag:hover { opacity: 1; }
+
+/* ---- Hero WebGL Canvas ---- */
+canvas#bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ---- Hero 遮罩（让 WebGL 微微透出）---- */
+.hero-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- 入场动画 (Motion One 风格，但用纯 CSS 以避免依赖) ---- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anim-in {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transform: translateY(32px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-.animate-on-scroll.visible {
+.anim-in.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Hero 入场不使用 scroll trigger，直接播放 */
-.animate-fade-in-up {
-  animation: fade-in-up 0.8s ease-out forwards;
-}
+/* 延迟 */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
 
-.animate-fade-in {
-  animation: fade-in 0.8s ease-out forwards;
-}
-
-/* 延迟入场 */
-.delay-100 { animation-delay: 0.1s; opacity: 0; }
-.delay-200 { animation-delay: 0.2s; opacity: 0; }
-.delay-300 { animation-delay: 0.3s; opacity: 0; }
-.delay-400 { animation-delay: 0.4s; opacity: 0; }
-.delay-500 { animation-delay: 0.5s; opacity: 0; }
-
-/* ---- 项目卡片 hover 效果 (参考 Dopefolio) ---- */
+/* ---- 项目卡 ---- */
 .project-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-6px);
 }
 
-.dark .project-card:hover {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+/* ---- 链接 hover ---- */
+a.underline-hover {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0 1px;
+  transition: background-size 0.3s ease;
 }
 
-/* ---- 技能标签 hover ---- */
-.skill-tag {
-  transition: transform 0.2s ease, background-color 0.2s ease;
+a.underline-hover:hover {
+  background-size: 100% 1px;
 }
 
-.skill-tag:hover {
-  transform: scale(1.05);
-}
-
-/* ---- Section 标题下划线装饰 ---- */
-.section-heading {
-  position: relative;
-  display: inline-block;
-}
-
-.section-heading::after {
-  content: "";
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 48px;
-  height: 3px;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
-  border-radius: 2px;
-}
-
-/* ---- 导航栏毛玻璃效果 (参考 astro-nano) ---- */
-.nav-blur {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-/* ---- 社交图标 hover 微动 ---- */
-.social-icon {
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.social-icon:hover {
-  transform: translateY(-2px);
-}
-
-/* ---- 减少动画偏好 (可访问性参考 portfolio-template) ---- */
+/* ---- prefers-reduced-motion ---- */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-
-  html {
-    scroll-behavior: auto;
-  }
-
-  .animate-on-scroll {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+  html { scroll-behavior: auto; }
+  .anim-in { opacity: 1; transform: none; transition: none; }
 }

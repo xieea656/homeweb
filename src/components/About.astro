@@ -1,55 +1,37 @@
 ---
-// ============================================================
-// About — 个人介绍 + 技能标签云
-// 参考：portfolio-template (clean about), devportfolio (skills tags)
-// ============================================================
+// About — 杂志排版：kicker + 衬线标题 + 非衬线正文 + 等宽标签
 import { ABOUT } from "../config";
 ---
 
-<section id="about" class="px-6 py-24">
-  <div class="mx-auto max-w-4xl">
-    <!-- Section 标题 -->
-    <h2
-      class="section-heading mb-16 text-center text-3xl font-bold tracking-tight
-             dark:text-white"
-    >
+<section id="about" class="px-6 py-32 md:py-40">
+  <div class="mx-auto max-w-3xl">
+    <!-- Kicker -->
+    <p class="kicker mb-4 dark:text-white/50">About</p>
+
+    <!-- 衬线标题 -->
+    <h2 class="h2-serif mb-12 text-[clamp(1.6rem,2.8vw,2.4rem)] dark:text-[var(--color-paper)]">
       {ABOUT.title}
     </h2>
 
-    <div class="grid gap-12 md:grid-cols-5">
-      <!-- 头像（可选） -->
-      {ABOUT.avatar && (
-        <div class="animate-on-scroll md:col-span-2">
-          <img
-            src={ABOUT.avatar}
-            alt="晓黎的头像"
-            class="mx-auto h-48 w-48 rounded-2xl object-cover shadow-lg"
-            loading="lazy"
-            width="192"
-            height="192"
-          />
-        </div>
-      )}
+    <!-- 正文 (非衬线 body) -->
+    <div class="space-y-5">
+      {ABOUT.paragraphs.map((p, i) => (
+        <p class="anim-in delay-{i === 0 ? '1' : '2'} body-zh text-[clamp(0.9rem,1.15vw,1.05rem)] leading-relaxed text-[var(--color-ink)]/75 dark:text-[var(--color-paper)]/75">
+          {p}
+        </p>
+      ))}
+    </div>
 
-      <!-- 介绍文字 -->
-      <div class={ABOUT.avatar ? "md:col-span-3" : "md:col-span-5"}>
-        {ABOUT.paragraphs.map((p, i) => (
-          <p
-            class="animate-on-scroll mb-4 leading-relaxed text-gray-600 dark:text-gray-400"
-          >
-            {p}
-          </p>
-        ))}
+    <!-- 分隔线 -->
+    <div class="rule my-10 dark:opacity-15"></div>
 
-        <!-- 技能标签云 — 参考 devportfolio -->
-        <div class="animate-on-scroll mt-8 flex flex-wrap gap-2">
-          {ABOUT.skills.map((skill) => (
-            <span class="skill-tag cursor-default rounded-full bg-gray-100 px-4 py-1.5 text-sm font-medium text-gray-700 dark:bg-gray-800 dark:text-gray-300">
-              {skill}
-            </span>
-          ))}
-        </div>
-      </div>
+    <!-- 技能标签 (等宽 mono tags) -->
+    <div class="anim-in delay-3 flex flex-wrap gap-3">
+      {ABOUT.skills.map((skill) => (
+        <span class="tag dark:opacity-55 dark:hover:opacity-90">
+          {skill}
+        </span>
+      ))}
     </div>
   </div>
 </section>

@@ -1,10 +1,6 @@
 ---
-// ============================================================
-// index.astro — 唯一页面，组装所有 section
-// 参考：simplefolio (one-page scroll), devportfolio (modular)
-// ============================================================
+// index.astro — 杂志排版单页
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
 import Projects from "../components/Projects.astro";
@@ -14,37 +10,25 @@ import "../styles/global.css";
 ---
 
 <BaseLayout>
-  <Header />
-  <main id="main-content">
+  <main id="main-content" class="relative z-10">
     <Hero />
     <About />
     <Projects />
     <Contact />
+    <Footer />
   </main>
-  <Footer />
 </BaseLayout>
 
-<!--
-  滚动入场动画 Observer (参考 simplefolio 的 ScrollReveal 思路,
-  但用原生 IntersectionObserver 实现，零依赖)
--->
+<!-- 滚动入场动画 Observer -->
 <script>
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    {
-      threshold: 0.1,
-      rootMargin: "0px 0px -40px 0px",
-    }
-  );
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: "0px 0px -30px 0px" });
 
-  document.querySelectorAll(".animate-on-scroll").forEach((el) => {
-    observer.observe(el);
-  });
+  document.querySelectorAll(".anim-in").forEach((el) => observer.observe(el));
 </script>

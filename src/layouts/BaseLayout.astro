@@ -1,113 +1,128 @@
 ---
-// ============================================================
-// BaseLayout — 全局布局
-// 参考：devportfolio (SEO meta), astro-nano (dark mode),
-//       portfolio-template (semantic HTML, keyboard a11y)
-// ============================================================
+// BaseLayout — 杂志排版 · WebGL 背景 · 电子墨水
+// 参考：guizang-ppt (typography, WebGL), devportfolio (SEO)
 import { SITE } from "../config";
 
-interface Props {
-  title?: string;
-  description?: string;
-}
-
+interface Props { title?: string; description?: string; }
 const { title = SITE.title, description = SITE.description } = Astro.props;
 ---
 
 <!doctype html>
 <html lang={SITE.lang} class="scroll-smooth">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
-    <meta name="theme-color" content="#4f46e5" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#0a0a0b" />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={SITE.url} />
-    <meta property="og:image" content={`${SITE.url}${SITE.ogImage}`} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={SITE.url} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+  <!-- favicon: 用纯文本符号替代 emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.8em%22 font-size=%2285%22 font-family=%22serif%22>XL</text></svg>" />
 
-    <!-- Favicon (inline SVG) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- 字体：衬线(Noto Serif SC + Playfair Display) + 非衬线(Noto Sans SC + Inter) + 等宽(IBM Plex Mono) -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inter:opsz,wght@14..32,400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;600;700;900&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&display=swap" rel="stylesheet" />
 
-    <!-- Preconnect to any external origins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <title>{title}</title>
 
-    <!-- Font: Inter (variable, subset=latin) — 参考 starfolio 的 fontsource 策略 -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap"
-      rel="stylesheet"
-    />
-
-    <title>{title}</title>
-
-    <!-- Inline dark mode script — 参考 astro-nano，阻止页面闪烁 -->
-    <script is:inline>
-      (function () {
-        const t = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (t === "dark" || (!t && prefersDark)) {
-          document.documentElement.classList.add("dark");
-        }
-      })();
-    </script>
-  </head>
-
-  <body
-    class="min-h-screen bg-white text-gray-900 antialiased
-           dark:bg-gray-950 dark:text-gray-100
-           transition-colors duration-300"
-  >
-    <!-- Skip to content — 可访问性参考 portfolio-template -->
-    <a
-      href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4
-             focus:z-50 focus:rounded-lg focus:bg-indigo-600 focus:px-4 focus:py-2
-             focus:text-white focus:outline-none"
-    >
-      跳转到内容
-    </a>
-
-    <slot />
-
-    <!-- 回到顶部按钮 (纯 CSS + 少量 JS) -->
-    <button
-      id="back-to-top"
-      aria-label="回到顶部"
-      class="fixed bottom-6 right-6 z-40 flex h-10 w-10 items-center justify-center
-             rounded-full bg-indigo-600 text-white opacity-0 shadow-lg
-             transition-all duration-300 pointer-events-none
-             hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400
-             dark:bg-indigo-500 dark:hover:bg-indigo-600"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
-      </svg>
-    </button>
-
-    <script is:inline>
-      // 回到顶部按钮显示/隐藏
-      const btn = document.getElementById("back-to-top");
-      if (btn) {
-        window.addEventListener("scroll", () => {
-          if (window.scrollY > 400) {
-            btn.classList.remove("opacity-0", "pointer-events-none");
-            btn.classList.add("opacity-100");
-          } else {
-            btn.classList.add("opacity-0", "pointer-events-none");
-            btn.classList.remove("opacity-100");
-          }
-        }, { passive: true });
-        btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  <!-- 暗色模式防闪烁 -->
+  <script is:inline>
+    (function(){
+      const t=localStorage.getItem("theme");
+      if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme:dark)").matches)){
+        document.documentElement.classList.add("dark");
       }
-    </script>
-  </body>
+    })();
+  </script>
+</head>
+
+<!-- body 由各页面自行控制背景色，layout 只提供骨架 -->
+<body class="min-h-screen antialiased">
+  <slot />
+
+  <!-- ====== WebGL 流体背景 Canvas (参考 guizang-ppt shader) ====== -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <script is:inline>
+    // ---- WebGL 流体背景 ----
+    const VS = 'attribute vec2 position;void main(){gl_Position=vec4(position,0.0,1.0);}';
+    const FS = 'precision highp float;\n'+
+      'uniform vec2 u_resolution;uniform float u_time;uniform vec2 u_mouse;\n'+
+      'vec3 palette(float t,vec3 a,vec3 b,vec3 c,vec3 d){return a+b*cos(6.28318*(c*t+d));}\n'+
+      'void main(){\n'+
+      '  vec2 uv=gl_FragCoord.xy/u_resolution.xy;\n'+
+      '  vec2 p=uv*2.0-1.0;p.x*=u_resolution.x/u_resolution.y;\n'+
+      '  vec2 m=u_mouse*2.0-1.0;m.x*=u_resolution.x/u_resolution.y;\n'+
+      '  float md=length(p-m);\n'+
+      '  float mr=sin(md*15.0-u_time*4.0)*exp(-md*3.0);p+=mr*0.08;\n'+
+      '  vec2 p0=p;\n'+
+      '  for(float i=1.0;i<4.0;i++){\n'+
+      '    p.x+=0.1/i*sin(i*3.0*p.y+u_time*0.4)+0.05;\n'+
+      '    p.y+=0.1/i*cos(i*2.0*p.x+u_time*0.3)-0.05;\n'+
+      '  }\n'+
+      '  float r=length(p);float ang=atan(p.y,p.x);\n'+
+      '  vec3 a=vec3(0.12,0.12,0.13);vec3 b=vec3(0.03,0.04,0.05);\n'+
+      '  vec3 c=vec3(1.0,1.0,1.0);vec3 d=vec3(0.1,0.2,0.4);\n'+
+      '  vec3 col=palette(r*1.5+p0.x*0.5+u_time*0.1,a,b,c,d);\n'+
+      '  float disp=sin(r*25.0-u_time*1.5+ang*2.0)*0.5+0.5;\n'+
+      '  col+=vec3(disp*0.015,disp*0.01,disp*0.02);\n'+
+      '  float hi=pow(sin(p.x*4.0+p.y*3.0+u_time)*0.5+0.5,8.0);col+=hi*0.08;\n'+
+      '  vec3 base=vec3(0.05,0.05,0.06);col=mix(base,col,0.85);\n'+
+      '  gl_FragColor=vec4(col,1.0);\n'+
+      '}';
+
+    const canvas = document.getElementById('bg-canvas');
+    if (canvas) {
+      const gl = canvas.getContext('webgl', { alpha: false, antialias: true });
+      if (gl) {
+        const mk = (t, s) => { const sh = gl.createShader(t); gl.shaderSource(sh, s); gl.compileShader(sh); return sh; };
+        const prog = gl.createProgram();
+        gl.attachShader(prog, mk(gl.VERTEX_SHADER, VS));
+        gl.attachShader(prog, mk(gl.FRAGMENT_SHADER, FS));
+        gl.linkProgram(prog); gl.useProgram(prog);
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+        const pos = gl.getAttribLocation(prog, 'position');
+        gl.enableVertexAttribArray(pos); gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+        const lRes = gl.getUniformLocation(prog, 'u_resolution');
+        const lT = gl.getUniformLocation(prog, 'u_time');
+        const lM = gl.getUniformLocation(prog, 'u_mouse');
+        const mouse = { x: 0.5, y: 0.5 };
+        addEventListener('mousemove', e => { mouse.x = e.clientX / innerWidth; mouse.y = e.clientY / innerHeight; });
+        const resize = () => {
+          const dpr = Math.min(devicePixelRatio || 1, 2);
+          canvas.width = innerWidth * dpr;
+          canvas.height = innerHeight * dpr;
+          gl.viewport(0, 0, canvas.width, canvas.height);
+        };
+        addEventListener('resize', resize); resize();
+        const t0 = Date.now();
+        (function loop() {
+          const t = (Date.now() - t0) / 1000;
+          gl.uniform2f(lRes, canvas.width, canvas.height);
+          gl.uniform1f(lT, t);
+          gl.uniform2f(lM, mouse.x, 1 - mouse.y);
+          gl.drawArrays(gl.TRIANGLES, 0, 6);
+          requestAnimationFrame(loop);
+        })();
+      }
+    }
+
+    // ---- 暗色模式切换 ----
+    window.toggleTheme = function() {
+      const cls = document.documentElement.classList;
+      cls.toggle('dark');
+      localStorage.setItem('theme', cls.contains('dark') ? 'dark' : 'light');
+    };
+  </script>
+</body>
 </html>
