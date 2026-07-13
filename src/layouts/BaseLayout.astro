@@ -1,0 +1,113 @@
+---
+// ============================================================
+// BaseLayout — 全局布局
+// 参考：devportfolio (SEO meta), astro-nano (dark mode),
+//       portfolio-template (semantic HTML, keyboard a11y)
+// ============================================================
+import { SITE } from "../config";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = SITE.title, description = SITE.description } = Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.lang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#4f46e5" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={SITE.url} />
+    <meta property="og:image" content={`${SITE.url}${SITE.ogImage}`} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Favicon (inline SVG) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>" />
+
+    <!-- Preconnect to any external origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Font: Inter (variable, subset=latin) — 参考 starfolio 的 fontsource 策略 -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+
+    <!-- Inline dark mode script — 参考 astro-nano，阻止页面闪烁 -->
+    <script is:inline>
+      (function () {
+        const t = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (t === "dark" || (!t && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+  </head>
+
+  <body
+    class="min-h-screen bg-white text-gray-900 antialiased
+           dark:bg-gray-950 dark:text-gray-100
+           transition-colors duration-300"
+  >
+    <!-- Skip to content — 可访问性参考 portfolio-template -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4
+             focus:z-50 focus:rounded-lg focus:bg-indigo-600 focus:px-4 focus:py-2
+             focus:text-white focus:outline-none"
+    >
+      跳转到内容
+    </a>
+
+    <slot />
+
+    <!-- 回到顶部按钮 (纯 CSS + 少量 JS) -->
+    <button
+      id="back-to-top"
+      aria-label="回到顶部"
+      class="fixed bottom-6 right-6 z-40 flex h-10 w-10 items-center justify-center
+             rounded-full bg-indigo-600 text-white opacity-0 shadow-lg
+             transition-all duration-300 pointer-events-none
+             hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400
+             dark:bg-indigo-500 dark:hover:bg-indigo-600"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+      </svg>
+    </button>
+
+    <script is:inline>
+      // 回到顶部按钮显示/隐藏
+      const btn = document.getElementById("back-to-top");
+      if (btn) {
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 400) {
+            btn.classList.remove("opacity-0", "pointer-events-none");
+            btn.classList.add("opacity-100");
+          } else {
+            btn.classList.add("opacity-0", "pointer-events-none");
+            btn.classList.remove("opacity-100");
+          }
+        }, { passive: true });
+        btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+      }
+    </script>
+  </body>
+</html>

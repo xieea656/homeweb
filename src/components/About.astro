@@ -1,0 +1,55 @@
+---
+// ============================================================
+// About — 个人介绍 + 技能标签云
+// 参考：portfolio-template (clean about), devportfolio (skills tags)
+// ============================================================
+import { ABOUT } from "../config";
+---
+
+<section id="about" class="px-6 py-24">
+  <div class="mx-auto max-w-4xl">
+    <!-- Section 标题 -->
+    <h2
+      class="section-heading mb-16 text-center text-3xl font-bold tracking-tight
+             dark:text-white"
+    >
+      {ABOUT.title}
+    </h2>
+
+    <div class="grid gap-12 md:grid-cols-5">
+      <!-- 头像（可选） -->
+      {ABOUT.avatar && (
+        <div class="animate-on-scroll md:col-span-2">
+          <img
+            src={ABOUT.avatar}
+            alt="晓黎的头像"
+            class="mx-auto h-48 w-48 rounded-2xl object-cover shadow-lg"
+            loading="lazy"
+            width="192"
+            height="192"
+          />
+        </div>
+      )}
+
+      <!-- 介绍文字 -->
+      <div class={ABOUT.avatar ? "md:col-span-3" : "md:col-span-5"}>
+        {ABOUT.paragraphs.map((p, i) => (
+          <p
+            class="animate-on-scroll mb-4 leading-relaxed text-gray-600 dark:text-gray-400"
+          >
+            {p}
+          </p>
+        ))}
+
+        <!-- 技能标签云 — 参考 devportfolio -->
+        <div class="animate-on-scroll mt-8 flex flex-wrap gap-2">
+          {ABOUT.skills.map((skill) => (
+            <span class="skill-tag cursor-default rounded-full bg-gray-100 px-4 py-1.5 text-sm font-medium text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

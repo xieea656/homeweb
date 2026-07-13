@@ -1,0 +1,157 @@
+/* ============================================================
+   Global Styles — Tailwind CSS v4 + 自定义动画 + 暗色模式
+   参考：astro-nano (minimal CSS), Dopefolio (bold animations)
+   ============================================================ */
+
+@import "tailwindcss";
+
+/* ---- 暗色模式变量 ---- */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---- 主题色 ---- */
+@theme {
+  --color-accent: #4f46e5;
+  --color-accent-light: #6366f1;
+  --color-accent-dark: #4338ca;
+  --color-surface: #f8fafc;
+  --color-surface-dark: #0f172a;
+}
+
+/* ---- 基础样式 ---- */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* 选中颜色 */
+::selection {
+  background-color: rgba(79, 70, 229, 0.2);
+  color: inherit;
+}
+
+/* ---- 滚动入场动画 (参考 simplefolio reveal + astro-nano minimal) ---- */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 默认隐藏，js 添加 class 后动画入场 */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero 入场不使用 scroll trigger，直接播放 */
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+/* 延迟入场 */
+.delay-100 { animation-delay: 0.1s; opacity: 0; }
+.delay-200 { animation-delay: 0.2s; opacity: 0; }
+.delay-300 { animation-delay: 0.3s; opacity: 0; }
+.delay-400 { animation-delay: 0.4s; opacity: 0; }
+.delay-500 { animation-delay: 0.5s; opacity: 0; }
+
+/* ---- 项目卡片 hover 效果 (参考 Dopefolio) ---- */
+.project-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+.dark .project-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ---- 技能标签 hover ---- */
+.skill-tag {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.skill-tag:hover {
+  transform: scale(1.05);
+}
+
+/* ---- Section 标题下划线装饰 ---- */
+.section-heading {
+  position: relative;
+  display: inline-block;
+}
+
+.section-heading::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+  border-radius: 2px;
+}
+
+/* ---- 导航栏毛玻璃效果 (参考 astro-nano) ---- */
+.nav-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ---- 社交图标 hover 微动 ---- */
+.social-icon {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-2px);
+}
+
+/* ---- 减少动画偏好 (可访问性参考 portfolio-template) ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
