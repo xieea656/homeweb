@@ -1,221 +1,156 @@
 /* ============================================================
-   HomeWeb — 杂志排版 · 纯色 · 双页切换
-   配色参考：guizang-ppt 墨水经典 + 靛蓝瓷
+   HomeWeb — Dark minimal · 参考 Gothsec/Astro-portfolio
    ============================================================ */
 
 @import "tailwindcss";
 
-/* ---- 主题色 ---- */
 :root {
-  --ink: #0f0f11;
-  --paper: #f6f4ef;
-  --paper-warm: #efe9df;
-  --accent: #2e5090;
-  --accent-soft: #6b8ab5;
-  --muted: #8a8a85;
+  --bg: #0a0a0a;
+  --bg-card: #111113;
+  --bg-card-hover: #18181b;
+  --text: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --border: #27272a;
+  --accent: #fafafa;
+  --radius: 12px;
 }
 
-.dark {
-  --ink: #f6f4ef;
-  --paper: #0f0f11;
-  --paper-warm: #16161a;
-  --accent: #7eaadc;
-  --accent-soft: #4a7ab5;
-  --muted: #6b6b70;
-}
-
-/* ---- 基础 ---- */
-html { scroll-behavior: smooth; }
 body {
-  font-family: "Noto Sans SC", "Inter", system-ui, sans-serif;
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", "Noto Sans SC", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  transition: background 0.6s ease, color 0.6s ease;
-}
-::selection { background: rgba(46,80,144,0.18); }
-
-/* ---- 字体体系 ---- */
-.serif  { font-family: "Noto Serif SC", "Playfair Display", Georgia, serif; }
-.sans   { font-family: "Noto Sans SC", "Inter", system-ui, sans-serif; }
-.mono   { font-family: "IBM Plex Mono", "Consolas", monospace; }
-
-.kicker {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 10px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  opacity: 0.5;
 }
 
-.rule {
-  width: 100%; height: 1px;
-  background: var(--ink);
-  opacity: 0.12;
+::selection { background: rgba(250,250,250,0.15); }
+
+/* ---- 字体 ---- */
+.mono { font-family: "IBM Plex Mono", "Consolas", monospace; }
+
+/* ---- 滚动条 ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ---- 导航 ---- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
 }
 
-/* ---- 页容器 & 切换动画 ---- */
-.page {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 6vh 6vw;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  overflow-y: auto;
-}
-
-.page.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* ---- 顶栏导航 ---- */
-.topbar {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 50;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 2rem;
-}
-
-.topbar .brand {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 11px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  opacity: 0.45;
-}
-
-.topbar nav { display: flex; gap: 2rem; }
-
-.topbar nav button {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  opacity: 0.35;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--ink);
-  padding: 0;
-  transition: opacity 0.2s ease;
-}
-
-.topbar nav button:hover,
-.topbar nav button.on { opacity: 0.85; }
-
-.topbar .toggles { display: flex; gap: 1.2rem; align-items: center; }
-
-.theme-btn {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  opacity: 0.35;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--ink);
-  transition: opacity 0.2s ease;
-}
-
-.theme-btn:hover { opacity: 0.75; }
-
-/* ---- 页面内容 ---- */
-.hero-text {
-  font-family: "Noto Serif SC", "Playfair Display", serif;
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.005em;
-}
-
-.section-title {
-  font-family: "Noto Serif SC", serif;
-  font-weight: 600;
-  line-height: 1.18;
-  letter-spacing: -0.003em;
-}
-
-.body-text {
-  font-family: "Noto Sans SC", sans-serif;
-  line-height: 1.75;
-  opacity: 0.72;
-}
-
-.lead-text {
-  font-family: "Noto Serif SC", serif;
-  line-height: 1.5;
-  opacity: 0.8;
-}
-
-.tag {
-  display: inline-block;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border: 1px solid var(--ink);
-  opacity: 0.55;
-  transition: opacity 0.2s ease;
-}
-
-.tag:hover { opacity: 0.9; }
-
-/* ---- 项目卡 ---- */
-.card {
-  transition: transform 0.3s ease;
-}
-
-.card:hover { transform: translateY(-3px); }
-
-/* ---- 链接下划线 ---- */
-.uline {
+.nav a, .nav button {
+  color: var(--text-secondary);
+  font-size: 14px;
   text-decoration: none;
-  background-image: linear-gradient(var(--ink), var(--ink));
+  transition: color 0.2s ease;
+  background: none; border: none; cursor: pointer;
+}
+
+.nav a:hover, .nav button:hover { color: var(--text); }
+
+/* ---- 按钮 ---- */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--text); color: var(--bg);
+}
+
+.btn-primary:hover { background: #e4e4e7; }
+
+.btn-outline {
+  border: 1px solid var(--border); color: var(--text);
+}
+
+.btn-outline:hover { background: var(--bg-card); border-color: var(--text-muted); }
+
+/* ---- 项目卡片 ---- */
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+}
+
+.project-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--text-muted);
+  transform: translateY(-2px);
+}
+
+/* ---- 技能标签 ---- */
+.skill-tag {
+  display: inline-flex; align-items: center;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.skill-tag:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+  background: var(--bg-card);
+}
+
+/* ---- 分隔线 ---- */
+.hr {
+  width: 100%; height: 1px;
+  background: var(--border);
+  border: none;
+}
+
+/* ---- 链接 ---- */
+.link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover { color: var(--text); }
+
+.link-underline {
+  text-decoration: none;
+  color: var(--text-secondary);
+  background-image: linear-gradient(var(--text-secondary), var(--text-secondary));
   background-position: 0 100%;
   background-repeat: no-repeat;
   background-size: 0 1px;
-  transition: background-size 0.3s ease;
+  transition: background-size 0.3s ease, color 0.2s ease;
 }
 
-.uline:hover { background-size: 100% 1px; }
+.link-underline:hover {
+  background-size: 100% 1px;
+  color: var(--text);
+}
 
 /* ---- 入场动画 ---- */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.anim-in {
-  opacity: 0; transform: translateY(20px);
+.fade-in {
+  opacity: 0; transform: translateY(16px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
-.page.active .anim-in {
-  opacity: 1; transform: translateY(0);
-}
-
-.page.active .anim-in.d1 { transition-delay: 0.08s; }
-.page.active .anim-in.d2 { transition-delay: 0.16s; }
-.page.active .anim-in.d3 { transition-delay: 0.24s; }
-.page.active .anim-in.d4 { transition-delay: 0.32s; }
-.page.active .anim-in.d5 { transition-delay: 0.40s; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
 
 /* ---- reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-  .anim-in { opacity: 1; transform: none; }
+  .fade-in { opacity: 1; transform: none; transition: none; }
 }

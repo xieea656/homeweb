@@ -1,17 +1,16 @@
 ---
-// BaseLayout — 杂志排版 · 纯色 · 无 WebGL
 import { SITE } from "../config";
 interface Props { title?: string; description?: string; }
 const { title = SITE.title, description = SITE.description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={SITE.lang}>
+<html lang={SITE.lang} class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
-  <meta name="theme-color" content="#f1efea" />
+  <meta name="theme-color" content="#0a0a0a" />
 
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
@@ -19,26 +18,16 @@ const { title = SITE.title, description = SITE.description } = Astro.props;
   <meta property="og:url" content={SITE.url} />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.8em%22 font-size=%2285%22 font-family=%22serif%22>XL</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%2280%22 font-size=%2280%22 font-family=%22monospace%22 fill=%22%23fafafa%22>XL</text></svg>" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@500;600;700;900&family=Playfair+Display:ital,wght@0,700;0,900;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:opsz,wght@14..32,400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <title>{title}</title>
-
-  <!-- 暗色模式防闪烁 -->
-  <script is:inline>
-    (function(){
-      var t=localStorage.getItem("theme");
-      if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme:dark)").matches)){
-        document.documentElement.classList.add("dark");
-      }
-    })();
-  </script>
 </head>
 
-<body class="min-h-screen antialiased">
+<body class="min-h-screen">
   <slot />
 </body>
 </html>
