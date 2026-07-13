@@ -1,34 +1,183 @@
 ---
-// index.astro — 杂志排版单页
+// index.astro — 双页横向切换 · 杂志排版 · 纯色背景
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/Hero.astro";
-import About from "../components/About.astro";
-import Projects from "../components/Projects.astro";
-import Contact from "../components/Contact.astro";
-import Footer from "../components/Footer.astro";
+import { HERO, ABOUT, PROJECTS, CONTACT, FOOTER } from "../config";
 import "../styles/global.css";
 ---
 
 <BaseLayout>
-  <main id="main-content" class="relative z-10">
-    <Hero />
-    <About />
-    <Projects />
-    <Contact />
-    <Footer />
-  </main>
-</BaseLayout>
+  <!-- ====== 顶栏导航 ====== -->
+  <div class="topbar">
+    <span class="brand">Xiao Li</span>
+    <nav>
+      <button id="nav-home" class="on" onclick="switchPage('home')">Home</button>
+      <button id="nav-proj" onclick="switchPage('projects')">Projects</button>
+    </nav>
+    <div class="toggles">
+      <button class="theme-btn" onclick="toggleTheme()">
+        <span class="dark:hidden">Dark</span>
+        <span class="hidden dark:inline">Light</span>
+      </button>
+    </div>
+  </div>
 
-<!-- 滚动入场动画 Observer -->
-<script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
+  <!-- ====== 第 1 页：Home (Hero + About) ====== -->
+  <section id="page-home" class="page active"
+           style="background:linear-gradient(170deg,var(--paper) 0%,var(--paper-warm) 100%)">
+    <div class="mx-auto flex max-w-2xl flex-col items-center text-center gap-10"
+         style="padding-top:3rem">
+
+      <!-- Kicker -->
+      <p class="kicker anim-in d1">{HERO.greeting}</p>
+
+      <!-- 名字 (衬线大字) -->
+      <h1 class="hero-text anim-in d2"
+          style="font-size:clamp(3.2rem,9vw,7rem)">
+        {HERO.name}
+      </h1>
+
+      <!-- Tagline -->
+      <p class="lead-text anim-in d3"
+         style="font-size:clamp(0.95rem,1.5vw,1.2rem);max-width:28rem">
+        {HERO.tagline}
+      </p>
+
+      <!-- 分隔 -->
+      <div class="rule anim-in d4" style="width:60px"></div>
+
+      <!-- About 正文 -->
+      <div style="max-width:32rem">
+        {ABOUT.paragraphs.map((p, i) => (
+          <p class="body-text anim-in" class:list={["d" + (4 + i)]}
+             style="font-size:clamp(0.88rem,1.1vw,1rem);margin-bottom:1.2rem">
+            {p}
+          </p>
+        ))}
+      </div>
+
+      <!-- 技能标签 -->
+      <div class="anim-in d5 flex flex-wrap justify-center gap-2" style="max-width:32rem">
+        {ABOUT.skills.map((skill) => (
+          <span class="tag">{skill}</span>
+        ))}
+      </div>
+    </div>
+
+    <!-- 页脚信息 -->
+    <p class="mono" style="position:absolute;bottom:2rem;font-size:9px;letter-spacing:0.16em;opacity:0.22">
+      {FOOTER.text}
+    </p>
+  </section>
+
+  <!-- ====== 第 2 页：Projects + Contact ====== -->
+  <section id="page-projects" class="page"
+           style="background:linear-gradient(170deg,var(--paper-warm) 0%,var(--paper) 100%)">
+    <div class="mx-auto flex max-w-2xl flex-col items-center gap-8"
+         style="padding-top:3rem">
+
+      <!-- Kicker -->
+      <p class="kicker anim-in d1">Projects</p>
+
+      <!-- 章节标题 -->
+      <h2 class="section-title anim-in d2"
+          style="font-size:clamp(1.5rem,3vw,2.2rem);margin-bottom:0.5rem">
+        项目
+      </h2>
+
+      <!-- 项目列表 -->
+      <div style="display:flex;flex-direction:column;gap:1.8rem;width:100%;max-width:28rem">
+        {PROJECTS.map((project, i) => (
+          <div class="card anim-in" class:list={["d" + (2 + i)]}
+               style="padding:1.2rem 0">
+            {project.link ? (
+              <a href={project.link} target="_blank" rel="noopener noreferrer"
+                 style="text-decoration:none;color:inherit">
+                <h3 class="serif" style="font-weight:600;font-size:1.15rem;margin-bottom:0.3rem">
+                  {project.name}
+                </h3>
+              </a>
+            ) : (
+              <h3 class="serif" style="font-weight:600;font-size:1.15rem;margin-bottom:0.3rem">
+                {project.name}
+              </h3>
+            )}
+            <p class="body-text" style="font-size:0.9rem;margin-bottom:0.6rem">
+              {project.description}
+            </p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem">
+              {project.techs.map((tech) => (
+                <span class="mono" style="font-size:8px;letter-spacing:0.14em;opacity:0.35;text-transform:uppercase">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- 分隔线 -->
+      <div class="rule anim-in d6" style="width:60px;margin-top:1rem"></div>
+
+      <!-- Contact -->
+      <div class="anim-in d6" style="text-align:center">
+        <p class="kicker" style="margin-bottom:0.3rem">{CONTACT.title}</p>
+        <p class="body-text" style="font-size:0.88rem;margin-bottom:1rem;max-width:22rem">
+          {CONTACT.text}
+        </p>
+
+        <!-- 邮箱 (衬线大字) -->
+        <a href={`mailto:${CONTACT.email}`}
+           class="serif uline"
+           style="font-size:1.3rem;font-weight:500;text-decoration:none;color:inherit">
+          {CONTACT.email}
+        </a>
+
+        <!-- 社交链接行 -->
+        <div style="display:flex;justify-content:center;gap:2rem;margin-top:1.5rem">
+          {CONTACT.socials.map((social) => (
+            <a href={social.url} target="_blank" rel="noopener noreferrer"
+               class="mono"
+               style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;color:inherit;opacity:0.35"
+               onmouseenter="this.style.opacity=0.75" onmouseleave="this.style.opacity=0.35">
+              {social.name}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <p class="mono" style="position:absolute;bottom:2rem;font-size:9px;letter-spacing:0.16em;opacity:0.22">
+      {FOOTER.text}
+    </p>
+  </section>
+
+  <!-- ====== 页切换脚本 ====== -->
+  <script>
+    function switchPage(name) {
+      document.querySelectorAll('.page').forEach(function(p) {
+        p.classList.remove('active');
+      });
+      document.getElementById('page-' + name).classList.add('active');
+
+      document.querySelectorAll('.topbar nav button').forEach(function(b) {
+        b.classList.remove('on');
+      });
+      document.getElementById('nav-' + name).classList.add('on');
+    }
+
+    function toggleTheme() {
+      var cls = document.documentElement.classList;
+      cls.toggle('dark');
+      localStorage.setItem('theme', cls.contains('dark') ? 'dark' : 'light');
+    }
+
+    // 键盘左右切换
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        var onHome = document.getElementById('page-home').classList.contains('active');
+        if (e.key === 'ArrowRight' && onHome) switchPage('projects');
+        if (e.key === 'ArrowLeft' && !onHome) switchPage('home');
       }
     });
-  }, { threshold: 0.08, rootMargin: "0px 0px -30px 0px" });
-
-  document.querySelectorAll(".anim-in").forEach((el) => observer.observe(el));
-</script>
+  </script>
+</BaseLayout>

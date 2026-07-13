@@ -1,191 +1,221 @@
 /* ============================================================
-   HomeWeb — 杂志排版 · 电子墨水美学
-   参考：guizang-ppt (color system, typography, WebGL)
+   HomeWeb — 杂志排版 · 纯色 · 双页切换
+   配色参考：guizang-ppt 墨水经典 + 靛蓝瓷
    ============================================================ */
 
 @import "tailwindcss";
 
-/* ---- 主题色 (墨水经典) ----
-   guizang-ppt 风格：ink/paper 命名，不是 text/bg */
-@theme {
-  --color-ink: #0a0a0b;
-  --color-paper: #f1efea;
-  --color-paper-tint: #e8e5de;
-  --color-ink-tint: #18181a;
-  --color-muted: #6b6b6b;
+/* ---- 主题色 ---- */
+:root {
+  --ink: #0f0f11;
+  --paper: #f6f4ef;
+  --paper-warm: #efe9df;
+  --accent: #2e5090;
+  --accent-soft: #6b8ab5;
+  --muted: #8a8a85;
 }
 
-/* ---- 暗色模式 ---- */
-@custom-variant dark (&:where(.dark, .dark *));
+.dark {
+  --ink: #f6f4ef;
+  --paper: #0f0f11;
+  --paper-warm: #16161a;
+  --accent: #7eaadc;
+  --accent-soft: #4a7ab5;
+  --muted: #6b6b70;
+}
 
 /* ---- 基础 ---- */
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
+html { scroll-behavior: smooth; }
 body {
   font-family: "Noto Sans SC", "Inter", system-ui, sans-serif;
-  background: var(--color-paper);
-  color: var(--color-ink);
-  transition: background 0.8s ease, color 0.8s ease;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background 0.6s ease, color 0.6s ease;
 }
+::selection { background: rgba(46,80,144,0.18); }
 
-.dark body,
-body.dark {
-  background: var(--color-ink);
-  color: var(--color-paper);
-}
+/* ---- 字体体系 ---- */
+.serif  { font-family: "Noto Serif SC", "Playfair Display", Georgia, serif; }
+.sans   { font-family: "Noto Sans SC", "Inter", system-ui, sans-serif; }
+.mono   { font-family: "IBM Plex Mono", "Consolas", monospace; }
 
-::selection {
-  background: rgba(10, 10, 11, 0.12);
-  color: inherit;
-}
-
-/* ---- 字体规则 (guizang-ppt 体系) ----
-   衬线 = 标题 · 金句 · 数字
-   非衬线 = 正文 · 描述
-   等宽 = kicker · meta · 标签 */
-.serif   { font-family: "Noto Serif SC", "Playfair Display", Georgia, serif; }
-.sans    { font-family: "Noto Sans SC", "Inter", system-ui, sans-serif; }
-.mono    { font-family: "IBM Plex Mono", "Consolas", monospace; }
-
-/* ---- Kicker (等宽小标签) ---- */
 .kicker {
   font-family: "IBM Plex Mono", monospace;
-  font-size: 11px;
-  letter-spacing: 0.28em;
+  font-size: 10px;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
-/* ---- 大标题 (衬线) ---- */
-.display-zh {
-  font-family: "Noto Serif SC", "Playfair Display", serif;
-  font-weight: 700;
-  line-height: 1.06;
-  letter-spacing: -0.005em;
-}
-
-.h1-serif {
-  font-family: "Noto Serif SC", "Playfair Display", serif;
-  font-weight: 700;
-  line-height: 1.14;
-  letter-spacing: -0.005em;
-}
-
-.h2-serif {
-  font-family: "Noto Serif SC", serif;
-  font-weight: 600;
-  line-height: 1.22;
-}
-
-/* ---- Body (非衬线) ---- */
-.body-zh {
-  font-family: "Noto Sans SC", sans-serif;
-  line-height: 1.78;
-  opacity: 0.78;
-}
-
-.lead {
-  font-family: "Noto Serif SC", serif;
-  font-weight: 400;
-  line-height: 1.45;
-  opacity: 0.82;
-}
-
-/* ---- 分隔线 ---- */
 .rule {
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.18;
+  width: 100%; height: 1px;
+  background: var(--ink);
+  opacity: 0.12;
 }
 
-/* ---- 标签 Tag ---- */
-.tag {
-  display: inline-block;
+/* ---- 页容器 & 切换动画 ---- */
+.page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6vh 6vw;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  overflow-y: auto;
+}
+
+.page.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---- 顶栏导航 ---- */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+}
+
+.topbar .brand {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+.topbar nav { display: flex; gap: 2rem; }
+
+.topbar nav button {
   font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  padding: 5px 12px;
-  border: 1px solid currentColor;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
+  opacity: 0.35;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink);
+  padding: 0;
+  transition: opacity 0.2s ease;
 }
 
-.tag:hover { opacity: 1; }
+.topbar nav button:hover,
+.topbar nav button.on { opacity: 0.85; }
 
-/* ---- Hero WebGL Canvas ---- */
-canvas#bg-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
+.topbar .toggles { display: flex; gap: 1.2rem; align-items: center; }
+
+.theme-btn {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.35;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink);
+  transition: opacity 0.2s ease;
 }
 
-/* ---- Hero 遮罩（让 WebGL 微微透出）---- */
-.hero-overlay {
-  position: relative;
-  z-index: 1;
+.theme-btn:hover { opacity: 0.75; }
+
+/* ---- 页面内容 ---- */
+.hero-text {
+  font-family: "Noto Serif SC", "Playfair Display", serif;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.005em;
 }
 
-/* ---- 入场动画 (Motion One 风格，但用纯 CSS 以避免依赖) ---- */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
+.section-title {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.003em;
 }
 
-.anim-in {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+.body-text {
+  font-family: "Noto Sans SC", sans-serif;
+  line-height: 1.75;
+  opacity: 0.72;
 }
 
-.anim-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+.lead-text {
+  font-family: "Noto Serif SC", serif;
+  line-height: 1.5;
+  opacity: 0.8;
 }
 
-/* 延迟 */
-.delay-1 { transition-delay: 0.1s; }
-.delay-2 { transition-delay: 0.2s; }
-.delay-3 { transition-delay: 0.3s; }
-.delay-4 { transition-delay: 0.4s; }
+.tag {
+  display: inline-block;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--ink);
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.tag:hover { opacity: 0.9; }
 
 /* ---- 项目卡 ---- */
-.project-card {
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+.card {
+  transition: transform 0.3s ease;
 }
 
-.project-card:hover {
-  transform: translateY(-6px);
-}
+.card:hover { transform: translateY(-3px); }
 
-/* ---- 链接 hover ---- */
-a.underline-hover {
+/* ---- 链接下划线 ---- */
+.uline {
   text-decoration: none;
-  background-image: linear-gradient(currentColor, currentColor);
+  background-image: linear-gradient(var(--ink), var(--ink));
   background-position: 0 100%;
   background-repeat: no-repeat;
   background-size: 0 1px;
   transition: background-size 0.3s ease;
 }
 
-a.underline-hover:hover {
-  background-size: 100% 1px;
+.uline:hover { background-size: 100% 1px; }
+
+/* ---- 入场动画 ---- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ---- prefers-reduced-motion ---- */
+.anim-in {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.page.active .anim-in {
+  opacity: 1; transform: translateY(0);
+}
+
+.page.active .anim-in.d1 { transition-delay: 0.08s; }
+.page.active .anim-in.d2 { transition-delay: 0.16s; }
+.page.active .anim-in.d3 { transition-delay: 0.24s; }
+.page.active .anim-in.d4 { transition-delay: 0.32s; }
+.page.active .anim-in.d5 { transition-delay: 0.40s; }
+
+/* ---- reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-  html { scroll-behavior: auto; }
-  .anim-in { opacity: 1; transform: none; transition: none; }
+  .anim-in { opacity: 1; transform: none; }
 }
